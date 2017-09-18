@@ -3,6 +3,7 @@
 namespace app\modules\dispatcher;
 
 use app\modules\dispatcher\components\Controller;
+use app\modules\dispatcher\components\Debug;
 use app\modules\dispatcher\models\LayoutModule;
 
 /**
@@ -94,7 +95,7 @@ class BasicModule extends \yii\base\Module
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public function run($layout, array $positions = [])
+    public function run($layout, array $positions = [], array $params = [])
     {
         $model = $this->findModel($layout, $positions);
 
@@ -102,7 +103,8 @@ class BasicModule extends \yii\base\Module
 
         foreach ($model as $item) {
             if ($controller = $this->findModuleController($item['module'])) {
-                $data[$item['position']][] = \Yii::createObject($controller, [$item['module'], $this])->index();
+                Debug::debug($params);
+                $data[$item['position']][] = \Yii::createObject($controller, [$item['module'], $this, $params[$item['module']]])->index();
             }
         }
 

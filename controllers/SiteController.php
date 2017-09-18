@@ -3,12 +3,15 @@
 namespace app\controllers;
 
 use app\modules\dispatcher\components\Dispatcher;
+use app\modules\dispatcher\models\EngineNodes;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\modules\dispatcher\components\Debug;
+use app\modules\dispatcher\models\EngineFolders;
 
 class SiteController extends Controller
 {
@@ -62,11 +65,44 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
+        $url = Yii::$app->request->get();
+        $parts = explode("/", $url["url"]);
+
+        $pid = 0;
+        foreach ($parts as $part) {
+            $folder = EngineFolders::find()->where(['uri_part' => $part])->andWhere(['pid' => $pid])->asArray()->limit(1)->one();
+            $pid = $folder['id'];
+            if(isset($folder)) {
+                $folders[] = $folder;
+            }
+        }
+
+        $finalFolder = array_pop($folders);
+
+        $nodes = EngineNodes::find()->where(['folder_id' => $finalFolder['id']])->asArray()->all();
+
+
+
+        $params[$nodes[0]['module']] = $nodes[0]['params'];//['text_id' => '1084']//$nodes[0]['params']
+        Debug::debug($nodes);
+
         /* @var $modules Dispatcher */
-        $modules = \Yii::$app->dispatcher->modules(1);
+        $modules = \Yii::$app->dispatcher->modules(3, [], $params);
 
         return $this->render('index', compact('modules'));
     }
+
+
+    public function actionPage() {
+        $request = Yii::$app->request;
+        echo "<pre>";
+             print_r($request->get());
+        echo "</pre>";
+    }
+
+
+
 
     /**
      * Login action.

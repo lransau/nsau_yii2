@@ -23,17 +23,18 @@ class Dispatcher extends Object
 
         $this->_module = \Yii::$app->getModule($this->module);
     }
-
+    
     /**
      * Get modules by layout
      *
      * @param $layout
      * @param array $positions
+     * @param array $params
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public function modules($layout, array $positions = [])
+    public function modules($layout, array $positions = [], array $params = [])
     {
-        return $this->_module->run($layout, $positions);
+        return $this->_module->run($layout, $positions, $params);
     }
 }
