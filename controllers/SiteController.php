@@ -80,15 +80,16 @@ class SiteController extends Controller
 
         $finalFolder = array_pop($folders);
 
-        $nodes = EngineNodes::find()->where(['folder_id' => $finalFolder['id']])->asArray()->all();
+        $nodes = EngineNodes::find()->where(['layout_id' => $finalFolder['id']])->asArray()->all();
 
 
 
-        $params[$nodes[0]['module']] = $nodes[0]['params'];//['text_id' => '1084']//$nodes[0]['params']
+
+        $params[$nodes[0]['module']] = unserialize($nodes[0]['params']);//['text_id' => '1084']//$nodes[0]['params']
         Debug::debug($nodes);
 
         /* @var $modules Dispatcher */
-        $modules = \Yii::$app->dispatcher->modules(3, [], $params);
+        $modules = \Yii::$app->dispatcher->modules($finalFolder['id'], [], $params);
 
         return $this->render('index', compact('modules'));
     }

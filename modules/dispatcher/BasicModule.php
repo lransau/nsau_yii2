@@ -103,7 +103,6 @@ class BasicModule extends \yii\base\Module
 
         foreach ($model as $item) {
             if ($controller = $this->findModuleController($item['module'])) {
-                Debug::debug($params);
                 $data[$item['position']][] = \Yii::createObject($controller, [$item['module'], $this, $params[$item['module']]])->index();
             }
         }

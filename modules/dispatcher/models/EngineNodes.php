@@ -15,6 +15,6 @@ class EngineNodes extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'engine_nodes';
+        return 'layout_module';
     }
 }
