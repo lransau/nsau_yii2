@@ -1,17 +1,29 @@
 $(document).ready(function (e) {
+
     $(document).on('click', 'a.texter_edit', function () {
         var id = $(this).attr('data-id');
-        $("div.editable_text").addClass('hidden');
+        $('#editable_text' + id).addClass('hidden');
         $.ajax({
             url: '/dispatcher/texter/default/edit',
             type: 'GET',
             data: { id: id},
             success: function (data) {
-                $('#edit' + id).html(data);
+                $('#edit_field' + id).html(data);
             }
         });
         return false;
     });
+
+    $(document).on('mouseenter', 'a.texter_edit', function () {
+        var id = $(this).attr('data-id');
+        $('#editable_text' + id).css('background-color', '#faf4e3');
+    });
+    $(document).on('mouseleave', 'a.texter_edit', function () {
+        var id = $(this).attr('data-id');
+        $('#editable_text' + id).css('background-color', '#fff');
+    });
+
+
     $(document).on('click', 'button.texter_save', function () {
         var id = $(this).attr('data-id');
         $.ajax({
@@ -19,20 +31,21 @@ $(document).ready(function (e) {
             type: 'POST',
             data: { id: id, text: tinymce.activeEditor.getContent()},
             success: function (data) {
-                $('div.editable_text')
+                $('#editable_text' + id)
                     .html(tinymce.activeEditor.getContent())
                     .append('<a class="texter_edit" href="#" data-id="'+id+'">[Редактировать]</a>')
                     .removeClass('hidden');
-                $('#edit' + id).empty();
+                $('#edit_field' + id).empty();
                 unsetTiny();
             }
         });
         return false;
     });
+
     $(document).on('click', 'button.texter_cancel', function () {
         var id = $(this).attr('data-id');
-        $("div.editable_text").removeClass('hidden');
-        $('#edit' + id).empty();
+        $('#editable_text' + id).removeClass('hidden');
+        $('#edit_field' + id).empty();
         unsetTiny();
         return false;
     });

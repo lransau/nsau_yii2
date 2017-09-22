@@ -64,13 +64,24 @@ AppAsset::register($this);
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+<footer id="footer">
+    <div class="wrapper">
+        <div id="copyright">
+            <div class="footer-left">
+                &copy;&nbsp;1998-<?php echo date('Y') ?> Новосибирский государственный аграрный университет <br>
+                630039, г. Новосибирск, ул. Добролюбова, 160<br/>
+                Свидетельство о регистрации СМИ <a href="http://nsau.edu.ru/images/about/smi_license.jpg">Эл №ФС77-43853 от 9 февраля 2011 года.</a>
+            </div>
+            <div class="footer-right">
+                <div class="age"><span class="age_limit">12+</span></div>
+                <a href="/support/"> Служба технической поддержки</a><br>
+                <a href="/department/commission/">Приемная комиссия</a>
+            </div>
+        </div>
     </div>
 </footer>
+
 
 <?php $this->endBody() ?>
 </body>

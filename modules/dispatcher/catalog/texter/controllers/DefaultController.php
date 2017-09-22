@@ -24,7 +24,7 @@ class DefaultController extends Controller
      */
     public function index()
     {
-        $text = TextItems::find()->where(['id' => $this->text_id])->one();
+        $text = $text = $this->selectText($this->text_id);
         return $this->render('index', ['text' => $text]);
     }
 
@@ -34,29 +34,30 @@ class DefaultController extends Controller
         Yii::$app->response->format = Response::FORMAT_HTML;
         $request = Yii::$app->request->get();
         $form = new EditForm();
-        $text = TextItems::find()->where(['id' => $request['id']])->one();
-        if(!empty($text)) {
-            return $this->renderAjax('edit', ['text' => $text, 'form' => $form]);
-        } else {
-            throw new \Exception('Not found');
-        }
-
+        $text = $this->selectText($request['id']);
+        return $this->renderAjax('edit', ['text' => $text, 'form' => $form]);
     }
 
     public function actionSave() {
         $this->guardIsAjaxRequest();
-//        Yii::$app->response->format = Response::FORMAT_HTML;
         $request = Yii::$app->request->post();
-        $text = TextItems::find()->where(['id' => $request['id']])->one();
+        $text = $this->selectText($request['id']);
         $text->text = $request['text'];
         $text->save();
-//        return $this->renderAjax('index', ['text' => $text]);
     }
 
     public function guardIsAjaxRequest()
     {
         if (!Yii::$app->request->isAjax)
             throw new \Exception('Only ajax requests');
+    }
+
+    public function selectText($id) {
+        $text = TextItems::find()->where(['id' => $id])->one();
+        if(empty($text)) {
+            throw new \Exception('Not found');
+        }
+        return $text;
     }
 
 }
