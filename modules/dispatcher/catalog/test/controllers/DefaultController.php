@@ -2,7 +2,8 @@
 
 namespace app\modules\dispatcher\catalog\test\controllers;
 
-use app\modules\dispatcher\components\Controller;
+//use app\modules\dispatcher\components\Controller;
+use yii\base\Controller;
 
 /**
  * Default controller for the `test` module
@@ -17,6 +18,10 @@ class DefaultController extends Controller
      * @throws \yii\base\InvalidCallException
      */
     public function index()
+    {
+        return $this->render('index');
+    }
+    public function actionEdit()
     {
         return $this->render('index');
     }

@@ -7,6 +7,8 @@ namespace app\modules\dispatcher\catalog\test;
  */
 class Module extends \yii\base\Module
 {
+    public $defaultControllerName = 'DefaultController';
+    public $modulesDir = 'catalog/test';
     /**
      * @inheritdoc
      */

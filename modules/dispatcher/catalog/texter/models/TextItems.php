@@ -5,7 +5,7 @@
  * Date: 18.09.2017
  * Time: 13:42
  */
-namespace app\modules\dispatcher\catalog\test2\models;
+namespace app\modules\dispatcher\catalog\texter\models;
 
 use yii\db\ActiveRecord;
 

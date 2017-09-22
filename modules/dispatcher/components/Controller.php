@@ -20,9 +20,13 @@ class Controller extends \yii\web\Controller
     public function render($view, $params = [])
     {
         $controller = str_replace('Controller', '', $this->module->defaultControllerName);
-
         $path = '@app/modules/dispatcher/' . $this->module->modulesDir . '/' . $this->id . '/views/' . $controller;
+        return $this->getView()->render($path . '/' . $view, $params, $this);
+    }
 
-        return $this->getView()->render($path . '/' . 'index', $params, $this);
+    public function render2($view, $params = [])
+    {
+        $content = $this->getView()->render($view, $params, $this);
+        return $this->renderContent($content);
     }
 }

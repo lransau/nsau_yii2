@@ -44,6 +44,9 @@ $config = [
         'dispatcher' => [
             'class' => 'app\modules\dispatcher\components\Dispatcher',
         ],
+        'assetManager' => [
+            'linkAssets' => true,
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,

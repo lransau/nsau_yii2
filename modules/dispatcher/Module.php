@@ -13,5 +13,13 @@ class Module extends BasicModule
     public function init()
     {
         parent::init();
+        $this ->modules = [
+            'test' => [
+                'class' => 'app\modules\dispatcher\catalog\test\Module' ,
+            ],
+            'texter' => [
+                'class' => 'app\modules\dispatcher\catalog\texter\Module' ,
+            ],
+        ];
     }
 }

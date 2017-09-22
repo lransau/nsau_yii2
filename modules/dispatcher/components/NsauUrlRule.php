@@ -18,33 +18,17 @@ use yii\base\Object;
 use yii\web\UrlRuleInterface;
 
 
-class NsauUrlRule extends Object implements UrlRuleInterface
+class NsauUrlRule extends UrlRule implements UrlRuleInterface
 {
 
-
-    public function createUrl($manager, $route, $params)
-    {
-//        if($route==='site/index')
-//        {
-//            $url=trim($params['url'],'/');
-//            unset($params['url']);
-//
-//            $parts=array();
-//            if(!empty($params))
-//            {
-//                foreach ($params as $key=>$val)
-//                    $parts[]=$key.'/'.$val;
-//
-//                $url .= '/'.implode('/', $parts);
-//            }
-//
-//            return $url;
-//        }
-//        return false;
-    }
+//    public function init()
+//    {
+//        return parent::init();
+//    }
 
     public function parseRequest($manager, $request)
     {
+
         $pathInfo = trim($request->getPathInfo(), '/');
 //        if(empty($pathInfo)) {
 //            return ["site/index", [""=>""]];
@@ -57,15 +41,33 @@ class NsauUrlRule extends Object implements UrlRuleInterface
 //        $data = EngineNodes::find()->select('params')
 //            ->where(['folder_id' => $folder->id])->one();
 //
+        $url = trim($request->getPathInfo(), '/');
+        $parts = explode("/", $url);
+
+        $pid = 0;
+        foreach ($parts as $part) {
+            $folder = EngineFolders::find()->where(['uri_part' => $part])->andWhere(['pid' => $pid])->asArray()->limit(1)->one();
+            $pid = $folder['id'];
+            if(isset($folder)) {
+                $folders[] = $folder;
+            }
+        }
+
+//        Debug::debug($pathInfo);
+
+        if(!empty($folders)) {
+            $params['url']=$pathInfo;
+            return ["site/index", $params];
+        } else {
+            return false;
+//            parent::parseRequest($manager, $request);
+        }
 
 
 
-        $params['url']=$pathInfo;
-
-        return ["site/index", $params];
 
 
-        return false;
+
     }
 
     private function findChildId($path) {

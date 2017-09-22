@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\modules\dispatcher\catalog\texter\models\TextItems;
 use app\modules\dispatcher\components\Dispatcher;
 use app\modules\dispatcher\models\EngineNodes;
 use Yii;
@@ -85,21 +86,13 @@ class SiteController extends Controller
 
 
 
-        $params[$nodes[0]['module']] = unserialize($nodes[0]['params']);//['text_id' => '1084']//$nodes[0]['params']
+        $params[$nodes[0]['module']] = unserialize($nodes[0]['params']);
         Debug::debug($nodes);
 
         /* @var $modules Dispatcher */
         $modules = \Yii::$app->dispatcher->modules($finalFolder['id'], [], $params);
 
         return $this->render('index', compact('modules'));
-    }
-
-
-    public function actionPage() {
-        $request = Yii::$app->request;
-        echo "<pre>";
-             print_r($request->get());
-        echo "</pre>";
     }
 
 
