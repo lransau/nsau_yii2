@@ -86,13 +86,16 @@ class SiteController extends Controller
 
 
 
+
         $params[$nodes[0]['module']] = unserialize($nodes[0]['params']);
-        Debug::debug($nodes);
+//        Debug::debug($nodes);$nodes[0]['params']
 
         /* @var $modules Dispatcher */
         $modules = \Yii::$app->dispatcher->modules($finalFolder['id'], [], $params);
 
-        return $this->render('index', compact('modules'));
+        $view = $nodes[0]['basic_view'] ?? 'index' . '.php';
+
+        return $this->render($view, compact('modules'));
     }
 
 
