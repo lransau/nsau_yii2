@@ -79,6 +79,8 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
          $extended_params = explode('/', $extended_params);
          array_shift($extended_params);
 
+         $rules = \Yii::$app->getUrlManager()->rules[6];
+//Debug::debug($rules->pattern);
         if(!empty($folders)) {
 
 
@@ -92,6 +94,8 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
                 $params[$extended_params[0]] = $extended_params[1];
             }
 
+//            preg_match('#^view/(?P\d+)$#u', $extended_params, $matches);
+            Debug::debug($matches);
 
 
             return ["site/index", $params];
