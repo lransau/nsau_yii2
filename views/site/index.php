@@ -17,10 +17,9 @@ use app\modules\dispatcher\Module;
         </div>
     <?php } ?>
 
-
-    <?php if (isset($modules[Module::POSITION_LEFT])) { ?>
+    <?php if (isset($modules[Module::POSITION_CONTENT])) { ?>
         <div class="row">
-            <?php foreach ($modules[Module::POSITION_LEFT] as $module) {
+            <?php foreach ($modules[Module::POSITION_CONTENT] as $module) {
                 echo $module;
             } ?>
         </div>

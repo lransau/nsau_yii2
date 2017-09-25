@@ -354,9 +354,10 @@ AppAsset::register($this);
     </div>
 </div>
 
-
-<div id="footer">
+<div id="footer-pusher">&nbsp;</div>
+<footer id="footer">
     <div class="wrapper">
+        <div id="main-counter"></div>
         <div id="copyright">
             <div class="footer-left">
                 &copy;&nbsp;1998-<?php echo date('Y') ?> Новосибирский государственный аграрный университет <br>
@@ -370,7 +371,7 @@ AppAsset::register($this);
             </div>
         </div>
     </div>
-</div>
+</footer>
 
 
 <?php $this->endBody() ?>

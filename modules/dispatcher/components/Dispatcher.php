@@ -33,8 +33,8 @@ class Dispatcher extends Object
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public function modules($layout, array $positions = [], array $params = [])
+    public function modules($layout, array $positions = [])
     {
-        return $this->_module->run($layout, $positions, $params);
+        return $this->_module->run($layout, $positions);
     }
 }

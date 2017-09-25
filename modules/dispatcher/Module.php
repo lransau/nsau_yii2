@@ -1,7 +1,7 @@
 <?php
 
 namespace app\modules\dispatcher;
-
+use Yii;
 /**
  * dispatcher module definition class
  */
@@ -13,6 +13,7 @@ class Module extends BasicModule
     public function init()
     {
         parent::init();
+        Yii::setAlias('@dispatcher_modules', '@app/modules/dispatcher/catalog');
         $this ->modules = [
             'test' => [
                 'class' => 'app\modules\dispatcher\catalog\test\Module' ,
@@ -20,6 +21,19 @@ class Module extends BasicModule
             'texter' => [
                 'class' => 'app\modules\dispatcher\catalog\texter\Module' ,
             ],
+//             'news' => [
+//                'class' => 'app\modules\dispatcher\catalog\news\Module' ,
+//                 'components' => [
+//                     'urlManager' => [
+//                         'enablePrettyUrl' => true,
+//                         'showScriptName' => false,
+//                         'enableStrictParsing' => false,
+//                         'rules' => [
+//                             ['view' => 'site/index']
+//                         ],
+//                     ],
+//                 ],
+//            ],
         ];
     }
 }

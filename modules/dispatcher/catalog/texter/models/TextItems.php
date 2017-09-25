@@ -15,5 +15,4 @@ class TextItems extends ActiveRecord
     {
         return 'text_items';
     }
-
 }

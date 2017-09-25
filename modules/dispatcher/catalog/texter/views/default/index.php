@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
-use app\modules\dispatcher\catalog\texter\AppAsset;
-AppAsset::register($this);
+use app\modules\dispatcher\catalog\texter\TexterAsset;
+TexterAsset::register($this);
 ?>
 <div class="texter_content">
     <div class="editable_text" id="editable_text<?=$text->id?>">

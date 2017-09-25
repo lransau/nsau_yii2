@@ -4,6 +4,7 @@ namespace app\modules\dispatcher;
 
 use app\modules\dispatcher\components\Controller;
 use app\modules\dispatcher\components\Debug;
+use app\modules\dispatcher\models\EngineNodes;
 use app\modules\dispatcher\models\LayoutModule;
 
 /**
@@ -18,6 +19,7 @@ class BasicModule extends \yii\base\Module
     const POSITION_FOOTER = 'footer';
     const POSITION_LEFT = 'left';
     const POSITION_RIGHT = 'right';
+    const POSITION_CONTENT = 'content';
 
     /**
      * @var array of positions
@@ -27,6 +29,7 @@ class BasicModule extends \yii\base\Module
         self::POSITION_FOOTER,
         self::POSITION_LEFT,
         self::POSITION_RIGHT,
+        self::POSITION_CONTENT,
     ];
 
     /**
@@ -95,15 +98,16 @@ class BasicModule extends \yii\base\Module
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public function run($layout, array $positions = [], array $params = [])
+    public function run($layout, array $positions = [])
     {
         $model = $this->findModel($layout, $positions);
+
 
         $data = [];
 
         foreach ($model as $item) {
             if ($controller = $this->findModuleController($item['module'])) {
-                $data[$item['position']][] = \Yii::createObject($controller, [$item['module'], $this, $params[$item['module']]])->index();
+                $data[$item['position']][] = \Yii::createObject($controller, [$item['module'], $this, unserialize($item['params'])])->index();
             }
         }
 
