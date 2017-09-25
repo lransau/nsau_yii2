@@ -28,7 +28,8 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
     {
         if($route==='site/index')
         {
-            Debug::debug($params);
+            unset($params['folder_id']);
+            unset($params['main_template']);
             $url=trim($params['url'],'/');
             unset($params['url']);
 
@@ -67,23 +68,32 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
             }
         }
 
+        if(count($folders) > 1) {
+          $finalFolder = array_pop($folders);
+        } else {
+          $finalFolder = $folders[0];
+        }
+
+
 
          $extended_params = explode('/', $extended_params);
          array_shift($extended_params);
 
         if(!empty($folders)) {
 
-//            echo $folder_path . PHP_EOL;
-//            echo $extended_params[1];
 
 
+            $params['folder_id'] = $finalFolder['id'];
+            $params['main_template'] = $finalFolder['main_template'];
             $params['url']=$folder_path;
+
+
             if(!empty($extended_params[0])) {
                 $params[$extended_params[0]] = $extended_params[1];
             }
-            $params['default'] = 'edit';
-//            Debug::debug($extended_params);
-//            $params['id'] = 39271;
+
+
+
             return ["site/index", $params];
         } else {
 //            echo $pathInfo;

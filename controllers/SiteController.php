@@ -68,24 +68,11 @@ class SiteController extends Controller
     {
 
         $url = Yii::$app->request->get();
-        $parts = explode("/", $url["url"]);
-
-        $pid = 0;
-        foreach ($parts as $part) {
-            $folder = EngineFolders::find()->where(['uri_part' => $part])->andWhere(['pid' => $pid])->asArray()->limit(1)->one();
-            $pid = $folder['id'];
-            if(isset($folder)) {
-                $folders[] = $folder;
-            }
-        }
-
-        $finalFolder = array_pop($folders);
-
 
         /* @var $modules Dispatcher */
-        $modules = \Yii::$app->dispatcher->modules($finalFolder['id']);
+        $modules = \Yii::$app->dispatcher->modules($url['folder_id']);
 
-        $view = $finalFolder['main_template'] ?? 'index';
+        $view = $url['main_template'] ?? 'index';
 
         return $this->render($view, compact('modules'));
     }
