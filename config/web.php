@@ -52,7 +52,7 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                ['class' => 'app\modules\dispatcher\components\NsauUrlRule',]
+                ['class' => 'yii\web\NsauUrlRule',]
             ],
         ],
 

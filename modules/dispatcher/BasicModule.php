@@ -55,7 +55,7 @@ class BasicModule extends \yii\base\Module
 
     public $defaultModuleAction = 'index';
 
-    public $moduleControllerParam = null;
+    public $moduleActionParam = null;
 
     /**
      *
@@ -113,30 +113,16 @@ class BasicModule extends \yii\base\Module
 
         foreach ($model as $item) {
             if($module_route_params['parser_node_id'] == $item['id']) {
-
-
-                switch (count($module_route_params['params'])) {
-                    case '1':{
-                        $this->moduleControllerParam = $module_route_params['params'][0];
-                    }
-                        break;
-                    case '2':{
-                        $this->defaultModuleAction = 'action' . $module_route_params['params'][0];
-                        $this->moduleControllerParam = $module_route_params['params'][1];
-                    }
-                    break;
-                    case '3': {
-                        $this->defaultControllerName = $module_route_params['params'][0] . 'Controller';
-                        $this->defaultModuleAction = 'action' . $module_route_params['params'][1];
-                        $this->moduleControllerParam = $module_route_params['params'][2];
-                    }
-                    break;
-                }
+                if(!empty($module_route_params['controller']))
+                    $this->defaultControllerName = $module_route_params['controller'] . 'Controller';
+                if(!empty($module_route_params['action']))
+                     $this->defaultModuleAction = 'action' . $module_route_params['action'];
+                $this->moduleActionParam = $module_route_params['id'];
 
             }
             if ($controller = $this->findModuleController($item['module'])) {
                 $a = $this->defaultModuleAction;
-                $data[$item['position']][] = \Yii::createObject($controller, [$item['module'], $this, unserialize($item['params'])])->$a($this->moduleControllerParam);
+                $data[$item['position']][] = \Yii::createObject($controller, [$item['module'], $this, unserialize($item['params'])])->$a($this->moduleActionParam);
             } else {
                 throw new \Exception('404');
             }
