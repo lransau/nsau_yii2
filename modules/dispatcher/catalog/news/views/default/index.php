@@ -1,5 +1,6 @@
 <?php
     use yii\widgets\LinkPager;
+    use yii\helpers\Url;
 ?>
 <div class="dispatcher-default-index">
     <?= LinkPager::widget(['pagination' => $pagination]) ?>
@@ -7,7 +8,7 @@
     <?foreach ($news as $new) {?>
     <p>
         <div class="short_news ">
-            <p class="news_date"><?=Yii::$app->formatter->asDatetime($new->time, 'dd.MM.Y')?>&nbsp;<a href="<?=$new->id?>" title="Читать подробнее"><?=$new->title?></a></p>
+            <p class="news_date"><?=Yii::$app->formatter->asDatetime($new->time, 'dd.MM.Y')?>&nbsp;<a href="/department/cit/news/<?=$new->id?>" title="Читать подробнее"><?=$new->title?></a></p>
             <div class="news_text">
                 <div class="news_img"><img src="/images/news/default.jpg" alt=""></div>
                 <a href="/department/cit/news/<?=$new->id?>" class="nd" title="Читать подробнее"><?=$new->short_text?></a>

@@ -29,12 +29,12 @@ class Dispatcher extends Object
      *
      * @param $layout
      * @param array $positions
-     * @param array $params
+     * @param array $module_route_params
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public function modules($layout, array $positions = [])
+    public function modules($layout, array $positions = [], array $module_route_params = null)
     {
-        return $this->_module->run($layout, $positions);
+        return $this->_module->run($layout, $positions, $module_route_params);
     }
 }

@@ -1,2 +1,2 @@
 <?php
-echo $news->id;
+echo $news->full_text;

@@ -30,6 +30,7 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
         {
             unset($params['folder_id']);
             unset($params['main_template']);
+            unset($params['module_route_params']);
             $url=trim($params['url'],'/');
             unset($params['url']);
 
@@ -80,7 +81,7 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
          array_shift($extended_params);
 
          $rules = \Yii::$app->getUrlManager()->rules[6];
-//Debug::debug($rules->pattern);
+
         if(!empty($folders)) {
 
 
@@ -90,12 +91,16 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
             $params['url']=$folder_path;
 
 
-            if(!empty($extended_params[0])) {
-                $params[$extended_params[0]] = $extended_params[1];
+            if($extended_params[0] == 'page') {
+                $params['page'] = $extended_params[1];
+                unset($extended_params[0], $extended_params[1]);
             }
 
-//            preg_match('#^view/(?P\d+)$#u', $extended_params, $matches);
-            Debug::debug($matches);
+            if(!empty($finalFolder['parser_node_id'])) {
+                $module_route_params['params'] = $extended_params;
+                $module_route_params['parser_node_id'] = $finalFolder['parser_node_id'];
+                $params['module_route_params'] = $module_route_params;
+            }
 
 
             return ["site/index", $params];

@@ -21,19 +21,9 @@ class Module extends BasicModule
             'texter' => [
                 'class' => 'app\modules\dispatcher\catalog\texter\Module' ,
             ],
-//             'news' => [
-//                'class' => 'app\modules\dispatcher\catalog\news\Module' ,
-//                 'components' => [
-//                     'urlManager' => [
-//                         'enablePrettyUrl' => true,
-//                         'showScriptName' => false,
-//                         'enableStrictParsing' => false,
-//                         'rules' => [
-//                             ['view' => 'site/index']
-//                         ],
-//                     ],
-//                 ],
-//            ],
+             'news' => [
+                'class' => 'app\modules\dispatcher\catalog\news\Module' ,
+            ],
         ];
     }
 }

@@ -21,7 +21,7 @@ class Bootstrap implements BootstrapInterface
         $app->getUrlManager()->addRules(
             [
                 // объявление правил здесь
-                'view/<id:\d+>' => 'site/about',
+//                'site/about/<id:\d+>' => 'dispatcher/news/default/view/<id:\d+>',
             ]
         );
     }

@@ -52,6 +52,11 @@ class BasicModule extends \yii\base\Module
      */
     public $modulePath;
 
+
+    public $defaultModuleAction = 'index';
+
+    public $moduleControllerParam = null;
+
     /**
      *
      * @throws \yii\base\InvalidParamException
@@ -95,10 +100,11 @@ class BasicModule extends \yii\base\Module
     /**
      * @param $layout
      * @param array $positions
+     * @param array $module_route_params
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public function run($layout, array $positions = [])
+    public function run($layout, array $positions = [], array $module_route_params = null)
     {
         $model = $this->findModel($layout, $positions);
 
@@ -106,8 +112,33 @@ class BasicModule extends \yii\base\Module
         $data = [];
 
         foreach ($model as $item) {
+            if($module_route_params['parser_node_id'] == $item['id']) {
+
+
+                switch (count($module_route_params['params'])) {
+                    case '1':{
+                        $this->moduleControllerParam = $module_route_params['params'][0];
+                    }
+                        break;
+                    case '2':{
+                        $this->defaultModuleAction = 'action' . $module_route_params['params'][0];
+                        $this->moduleControllerParam = $module_route_params['params'][1];
+                    }
+                    break;
+                    case '3': {
+                        $this->defaultControllerName = $module_route_params['params'][0] . 'Controller';
+                        $this->defaultModuleAction = 'action' . $module_route_params['params'][1];
+                        $this->moduleControllerParam = $module_route_params['params'][2];
+                    }
+                    break;
+                }
+
+            }
             if ($controller = $this->findModuleController($item['module'])) {
-                $data[$item['position']][] = \Yii::createObject($controller, [$item['module'], $this, unserialize($item['params'])])->index();
+                $a = $this->defaultModuleAction;
+                $data[$item['position']][] = \Yii::createObject($controller, [$item['module'], $this, unserialize($item['params'])])->$a($this->moduleControllerParam);
+            } else {
+                throw new \Exception('404');
             }
         }
 
@@ -143,7 +174,6 @@ class BasicModule extends \yii\base\Module
     public function findModuleController($name)
     {
         $className = $this->_modulesNamespace . '\\' . $name . '\controllers\\' . $this->defaultControllerName;
-
         return is_subclass_of($className, Controller::class) ? $className : null;
     }
 

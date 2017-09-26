@@ -70,7 +70,7 @@ class SiteController extends Controller
         $url = Yii::$app->request->get();
 
         /* @var $modules Dispatcher */
-        $modules = \Yii::$app->dispatcher->modules($url['folder_id']);
+        $modules = \Yii::$app->dispatcher->modules($url['folder_id'], [], $url['module_route_params']);
 
         $view = $url['main_template'] ?? 'index';
 
