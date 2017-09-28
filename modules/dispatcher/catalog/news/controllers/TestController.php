@@ -34,7 +34,7 @@ class TestController extends Controller
         if(empty($news)) {
             throw new \Exception('not found');
         }
-        return $this->render('view', ['news' => $news]);
+        return $this->render2('view', ['news' => $news]);
     }
 
 }

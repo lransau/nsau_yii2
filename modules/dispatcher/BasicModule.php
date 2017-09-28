@@ -55,7 +55,7 @@ class BasicModule extends \yii\base\Module
 
     public $defaultModuleAction = 'index';
 
-    public $moduleActionParam = null;
+    public $moduleControllerParam = null;
 
     /**
      *
@@ -107,25 +107,26 @@ class BasicModule extends \yii\base\Module
     public function run($layout, array $positions = [], array $module_route_params = null)
     {
         $model = $this->findModel($layout, $positions);
-
-
         $data = [];
+
+        Debug::debug($module_route_params);
+        Debug::debug($model);
 
         foreach ($model as $item) {
             if($module_route_params['parser_node_id'] == $item['id']) {
-                if(!empty($module_route_params['controller']))
-                    $this->defaultControllerName = $module_route_params['controller'] . 'Controller';
-                if(!empty($module_route_params['action']))
-                     $this->defaultModuleAction = 'action' . $module_route_params['action'];
-                $this->moduleActionParam = $module_route_params['id'];
+
+
 
             }
-            if ($controller = $this->findModuleController($item['module'])) {
-                $a = $this->defaultModuleAction;
-                $data[$item['position']][] = \Yii::createObject($controller, [$item['module'], $this, unserialize($item['params'])])->$a($this->moduleActionParam);
-            } else {
-                throw new \Exception('404');
-            }
+
+                $module = 'app\modules' . '\\' . 'nsautexter' . '\\' . 'Module';
+                $object = \Yii::createObject($module, ['nsautexter']);
+                $d['content'][] = $object->runAction('texter/index', ['id' => 213]);
+
+                return $d;
+
+
+
         }
 
         return $data;

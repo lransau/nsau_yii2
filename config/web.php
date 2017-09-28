@@ -52,7 +52,12 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                ['class' => 'yii\web\NsauUrlRule',]
+                'texter/<id:\d+>' => 'nsautexter/texter/index',
+                'texter/edit' => 'nsautexter/texter/edit',
+                'texter/save' => 'nsautexter/texter/save',
+                [
+                    'class' => 'app\modules\dispatcher\components\NsauUrlRule'
+                ]
             ],
         ],
 
@@ -62,6 +67,9 @@ $config = [
     'modules' => [
         'dispatcher' => [
             'class' => 'app\modules\dispatcher\Module',
+        ],
+        'nsautexter' => [
+            'class' => 'app\modules\nsautexter\Module',
         ],
     ],
 ];

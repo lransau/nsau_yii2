@@ -1,6 +1,7 @@
 <?php
 
 namespace app\modules\dispatcher\catalog\news;
+use app\modules\dispatcher\components\Debug;
 use yii\base\BootstrapInterface;
 
 
@@ -15,6 +16,22 @@ class Module extends \yii\base\Module  /*implements BootstrapInterface*/
      * @inheritdoc
      */
     public $controllerNamespace = 'app\modules\dispatcher\catalog\news\controllers';
+
+    private $cfg;
+    private $cfg1;
+
+    public function __construct($param1, $param2, $param3, $config = [])
+    {
+//        $this->cfg1= $param3;
+//        parent::__construct('news', null, $config);
+//        $this->init();
+    }
+
+
+//    public function init()
+//    {
+//        parent::init();
+//    }
 
     /**
      * @inheritdoc
