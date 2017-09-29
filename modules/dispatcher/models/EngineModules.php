@@ -3,16 +3,18 @@
  * Created by PhpStorm.
  * User: Roman
  * Date: 18.09.2017
- * Time: 13:42
+ * Time: 9:20
  */
-namespace app\modules\dispatcher\catalog\texter\models;
+
+namespace app\modules\dispatcher\models;
+
 
 use yii\db\ActiveRecord;
 
-class TextItems extends ActiveRecord
+class EngineModules extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'text_items';
+        return 'engine_modules';
     }
 }

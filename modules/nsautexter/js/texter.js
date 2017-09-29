@@ -4,7 +4,7 @@ $(document).ready(function (e) {
         var id = $(this).attr('data-id');
         $('#editable_text' + id).addClass('hidden');
         $.ajax({
-            url: '/texter/edit',
+            url: '/nsautexter/texter/edit',
             type: 'GET',
             data: { id: id},
             success: function (data) {
@@ -27,7 +27,7 @@ $(document).ready(function (e) {
     $(document).on('click', 'button.texter_save', function () {
         var id = $(this).attr('data-id');
         $.ajax({
-            url: '/texter/save',
+            url: '/nsautexter/texter/save',
             type: 'POST',
             data: { id: id, text: tinymce.activeEditor.getContent()},
             success: function (data) {

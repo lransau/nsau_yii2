@@ -11,8 +11,11 @@ namespace app\modules\dispatcher\components;
 
 use app\modules\dispatcher\components\Debug;
 use app\modules\dispatcher\models\EngineFolders;
+use app\modules\dispatcher\models\EngineModules;
 use app\modules\dispatcher\models\EngineNodes;
+use app\modules\dispatcher\models\LayoutModule;
 use yii\db\Query;
+use yii\helpers\Html;
 use yii\web\UrlRule;
 use yii\base\Object;
 use yii\web\UrlRuleInterface;
@@ -25,34 +28,25 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
     public $pattern = '';
     public $route = '';
 
-
-
-
-
     private $config = [
-        'class' => 'yii\web\UrlRule',
-        'pattern' => '',
-        'route' => ''
+        'class' => 'yii\web\GroupUrlRule',
+        'rules' => []
     ];
 
+    private $_moduleRules;
 
-    private $_rulesFactory;
 
-
-    protected function getRulesFactory()
+    private function setModuleRules($config)
     {
-        return $this->_rulesFactory;
-    }
-
-    protected function setRulesFactory($config)
-    {
-        $this->_rulesFactory = Yii::createObject($config);
+        $this->_moduleRules = Yii::createObject($config);
     }
 
     public function createUrl($manager, $route, $params)
     {
-        if($route==='site/index')
-        {
+//        Debug::debug($params);
+
+
+
             unset($params['folder_id']);
             unset($params['main_template']);
             unset($params['module_route_params']);
@@ -69,8 +63,8 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
             }
 
             return $url;
-        }
-        return false;
+
+//        return false;
     }
 
     public function parseRequest($manager, $request)
@@ -105,25 +99,31 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
             $finalFolder = $folders[0];
         }
 
-//        $um = new UrlManager();
-        foreach ($manager->rules as $rule) {
-            $rule->pattern = trim($rule->pattern, '/');
-            $rule->pattern = '/' . $rule->pattern . '/';
+//
 
-
-
-
-
-
-
-
-
+        if(!empty($finalFolder['parser_node_id'])) {
+            $node = LayoutModule::find()->where(['id' => $finalFolder['parser_node_id']])->asArray()->limit(1)->one();
+            $finalFolder['module'] = EngineModules::find()->where(['id' => $node['module']])->asArray()->limit(1)->one();
         }
-//        Debug::debug($um->parseRequest($request));
+        if(!empty($finalFolder['module']['url_rules'])) {
+            $url_rules = unserialize($finalFolder['module']['url_rules']);
+            foreach ($url_rules as $pattern => $route) {
+                unset($url_rules[$pattern]);
+                $url_rules[$folder_path . '/' . $pattern] = $route;
+            }
+            $this->config['rules'] = $url_rules;
+
+
+            $this->setModuleRules($this->config);
+            $routeObj = $this->_moduleRules->parseRequest($manager, $request);
+        }
+//        Debug::debug($url_rules);
+
+
         $extended_params = explode('/', $extended_params);
         array_shift($extended_params);
 
-        $rules = \Yii::$app->getUrlManager()->rules[6];
+
 
         if(!empty($folders)) {
 
@@ -139,19 +139,23 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
                 unset($extended_params[0], $extended_params[1]);
             }
 
-            $this->config['pattern'] = '/department/cit/news/<controller:\w+>/<id:\d+>';
-            $this->config['route'] = 'texter/<controller>';
-            $this->setRulesFactory($this->config);
-            $routeObj = $this->rulesFactory->parseRequest($manager, $request);
+
+//
+//echo htmlspecialchars(serialize([
+//    '<id:\d+>' => 'news/view'
+//]));
 
 
-Debug::debug($routeObj);
+//            '<module:\w+>/<controller:\w+>/<id:\d+>' => '<module>/<controller>',
+
+
+//Debug::debug($routeObj);
 
             $q = $extended_params;
             if(!empty($finalFolder['parser_node_id'])) {
                 $module_route_params['params'] = $extended_params;
                 $module_route_params['parser_node_id'] = $finalFolder['parser_node_id'];
-                $params['module_route_params'] = $module_route_params;
+                $params['module_route_params'] = $routeObj;
             }
 
 

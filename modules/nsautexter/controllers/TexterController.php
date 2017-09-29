@@ -21,9 +21,9 @@ class TexterController extends Controller
      * @throws \yii\base\ViewNotFoundException
      * @throws \yii\base\InvalidCallException
      */
-    public function actionIndex($id)
+    public function actionIndex()
     {
-        $text = $text = $this->selectText($id);
+        $text = $text = $this->selectText($this->module->text_id);
         return $this->render('index', ['text' => $text]);
     }
 

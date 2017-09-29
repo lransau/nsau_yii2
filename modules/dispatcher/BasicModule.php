@@ -4,6 +4,7 @@ namespace app\modules\dispatcher;
 
 use app\modules\dispatcher\components\Controller;
 use app\modules\dispatcher\components\Debug;
+use app\modules\dispatcher\models\EngineModules;
 use app\modules\dispatcher\models\EngineNodes;
 use app\modules\dispatcher\models\LayoutModule;
 
@@ -104,31 +105,20 @@ class BasicModule extends \yii\base\Module
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public function run($layout, array $positions = [], array $module_route_params = null)
+    public function run($layout, array $positions = [], $module_route_params = null)
     {
         $model = $this->findModel($layout, $positions);
         $data = [];
-
-        Debug::debug($module_route_params);
-        Debug::debug($model);
-
         foreach ($model as $item) {
-            if($module_route_params['parser_node_id'] == $item['id']) {
-
-
-
-            }
-
-                $module = 'app\modules' . '\\' . 'nsautexter' . '\\' . 'Module';
-                $object = \Yii::createObject($module, ['nsautexter']);
-                $d['content'][] = $object->runAction('texter/index', ['id' => 213]);
-
-                return $d;
-
-
-
+            $module = EngineModules::find()->where(['id' => $item['module']])->asArray()->limit(1)->one();
+            $module = 'app\modules' . '\\' . $module['name'] . '\\' . 'Module';
+            $params = unserialize($item['params']);
+            $params['class'] = $module;
+            $object = \Yii::createObject($params, ['id']);
+            $route = $module_route_params[0] ?? $object->defaultRoute;
+            $action_params = $module_route_params[1] ?? [];
+            $data[$item['position']][] = $object->runAction($route, $action_params);
         }
-
         return $data;
     }
 
@@ -154,15 +144,7 @@ class BasicModule extends \yii\base\Module
             ])->asArray()->all();
     }
 
-    /**
-     * @param $name
-     * @return null|string
-     */
-    public function findModuleController($name)
-    {
-        $className = $this->_modulesNamespace . '\\' . $name . '\controllers\\' . $this->defaultControllerName;
-        return is_subclass_of($className, Controller::class) ? $className : null;
-    }
+
 
     /**
      * Set modules namespace and path

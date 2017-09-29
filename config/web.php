@@ -52,9 +52,9 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                'texter/<id:\d+>' => 'nsautexter/texter/index',
-                'texter/edit' => 'nsautexter/texter/edit',
-                'texter/save' => 'nsautexter/texter/save',
+//                'texter/<id:\d+>' => 'nsautexter/texter/index',
+//                'texter/edit' => 'nsautexter/texter/edit',
+//                'texter/save' => 'nsautexter/texter/save',
                 [
                     'class' => 'app\modules\dispatcher\components\NsauUrlRule'
                 ]
