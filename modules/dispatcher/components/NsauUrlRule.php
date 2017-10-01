@@ -14,15 +14,11 @@ use app\modules\dispatcher\models\EngineFolders;
 use app\modules\dispatcher\models\EngineModules;
 use app\modules\dispatcher\models\EngineNodes;
 use app\modules\dispatcher\models\LayoutModule;
-use yii\db\Query;
-use yii\helpers\Html;
-use yii\web\UrlRule;
 use yii\base\Object;
 use yii\web\UrlRuleInterface;
-use yii\web\UrlManager;
 use Yii;
 
-class NsauUrlRule extends UrlRule implements UrlRuleInterface
+class NsauUrlRule extends Object implements UrlRuleInterface
 {
 
     public $pattern = '';
@@ -43,8 +39,9 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
 
     public function createUrl($manager, $route, $params)
     {
+//        Debug::debug($manager);
 //        Debug::debug($params);
-
+//        Debug::debug($route);
 
 
             unset($params['folder_id']);
@@ -52,14 +49,14 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
             unset($params['module_route_params']);
             $url=trim($params['url'],'/');
             unset($params['url']);
-
             $parts=array();
             if(!empty($params))
             {
                 foreach ($params as $key=>$val)
-                    $parts[]=$key.'/'.$val;
+                    $parts[]='?' . $key.'='.$val;
 
                 $url .= '/'.implode('/', $parts);
+                $url .= $params['url'];
             }
 
             return $url;
@@ -142,7 +139,8 @@ class NsauUrlRule extends UrlRule implements UrlRuleInterface
 
 //
 //echo htmlspecialchars(serialize([
-//    '<id:\d+>' => 'news/view'
+//    '<id:\d+>' => 'news/view',
+//    '<c:\w+>/<id:\d+>' => 'news/<c>'
 //]));
 
 

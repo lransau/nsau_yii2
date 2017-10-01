@@ -1,0 +1,3 @@
+edit
+<?php
+echo $id;

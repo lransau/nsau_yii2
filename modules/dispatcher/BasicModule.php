@@ -117,6 +117,7 @@ class BasicModule extends \yii\base\Module
             $object = \Yii::createObject($params, ['id']);
             $route = $module_route_params[0] ?? $object->defaultRoute;
             $action_params = $module_route_params[1] ?? [];
+//            Debug::debug($module_route_params);
             $data[$item['position']][] = $object->runAction($route, $action_params);
         }
         return $data;

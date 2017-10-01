@@ -26,6 +26,12 @@ class NewsController extends Controller
         return $this->render($this->module->view_type, ['news' => $news, 'pagination' => $pagination]);
     }
 
+    public function actionEdit($id)
+    {
+
+        return $this->render('edit', ['id' => $id]);
+    }
+
     public function renderNewsByID($id) {
         $news = NewsItems::find()->where(['id' => $id])->one();
         if(empty($news)) {
